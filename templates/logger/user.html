@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load colorize %}
+
+{% block content %}
+<time class="now">{% now "F d Y" %}</time>
+
+{% if logs.object_list %}
+<ul id="log-list">
+{% for log in logs.object_list %}
+    <li id="{{ log.id }}">
+        {% if log.type == 'msg' %}
+        <time>{{ log.created|date:"P" }}</time>
+        <strong><span style="color: {{ log.nick|colorize}};">{{ log.nick }}</span></strong>
+        {{ log.msg|urlize }}
+        {% endif %}
+        {% if log.type == 'action' %}
+        <time>{{ log.created|date:"P" }}</time>
+        <strong><em><span style="color: {{ log.nick|colorize}}; text-decoration: underline;">{{ log.nick }} {{ log.msg }}</span></em></strong>
+        {% endif %}
+
+    </li>
+{% endfor %}
+</ul>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if logs.has_previous %}
+            <a href="?page={{ logs.previous_page_number }}" title="go back">Prev</a>
+        {% endif %}
+        <span class="current">
+            Page {{ logs.number }} of {{ logs.paginator.num_pages }}
+        </span>
+        {% if logs.has_next %}
+            <a href="?page={{ logs.next_page_number }}" title="next">Next</a>
+        {% endif %}
+        
+
+    </span> <!-- end step links -->
+
+</div> <!-- end pagination -->
+
+{% else %}
+    <p><strong> There are no logs yet =( </strong></p>
+{% endif %}
+
+{% endblock %}
+
+
+{% block sidebar %}
+    <section id="stats">
+        <h3> Stats </h3>
+        <p> There are <strong>{{ logcount }}</strong> logs in the db. </p>
+        <p> Displaying <strong>{{ logs.paginator.per_page }}</strong> per page.</p>   
+    </section>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block page_title %}Index{% endblock %}
+{% block body_class %}index{% endblock %}
+
+{% block content %}
+    <p>Superbot keeps track of logs in these two channels:</p>
+    <ul class="chan-list">
+        <li><a href="{% url log-view "adullam" %}"title="adullam">#adullam</a></li>
+        <li><a href="{% url log-view "dev" %}" title="dev">#dev</a></li>
+    </ul>
+{% endblock %}
+
